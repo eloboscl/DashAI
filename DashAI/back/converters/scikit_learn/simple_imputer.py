@@ -1,8 +1,6 @@
 from sklearn.impute import SimpleImputer as SimpleImputerOperation
 
-from DashAI.back.converters.category.basic_preprocessing import (
-    BasicPreprocessingConverter,
-)
+from DashAI.back.api.utils import cast_string_to_type
 from DashAI.back.converters.sklearn_wrapper import SklearnWrapper
 from DashAI.back.core.schema_fields import (
     bool_field,
@@ -18,6 +16,11 @@ from DashAI.back.core.schema_fields.base_schema import BaseSchema
 
 
 class SimpleImputerSchema(BaseSchema):
+    missing_values: schema_field(
+        none_type(string_field()),  # int, float, str, np.nan, None or pandas.NA
+        "np.nan",
+        "The placeholder for the missing values.",
+    )  # type: ignore
     strategy: schema_field(
         enum_field(["mean", "median", "most_frequent", "constant"]),
         "mean",
@@ -46,21 +49,18 @@ class SimpleImputerSchema(BaseSchema):
     )  # type: ignore
 
 
-class SimpleImputer(
-    BasicPreprocessingConverter, SklearnWrapper, SimpleImputerOperation
-):
+class SimpleImputer(SklearnWrapper, SimpleImputerOperation):
     """SciKit-Learn's SimpleImputer wrapper for DashAI."""
 
     SCHEMA = SimpleImputerSchema
     DESCRIPTION = (
-        "Univariate imputer for completing missing "
-        "values with simple strategies. "
-        "Replace missing values using a descriptive statistic "
-        "(e.g. mean, median, or most frequent) "
-        "along each column, or using a constant value."
+        "Univariate imputer for completing missing values with simple strategies."
     )
     DISPLAY_NAME = "Simple Imputer"
-    IMAGE_PREVIEW = "simple_imputer.png"
 
     def __init__(self, **kwargs):
+        self.missing_values = kwargs.pop("missing_values", None)
+        self.missing_values = cast_string_to_type(self.missing_values)
+        kwargs["missing_values"] = self.missing_values
+
         super().__init__(**kwargs)

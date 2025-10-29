@@ -103,7 +103,7 @@ function DatasetsTable({
         headerName: "Created",
         minWidth: 140,
         editable: false,
-        valueGetter: (value) => formatDate(value),
+        valueFormatter: (params) => formatDate(params.value),
       },
       {
         field: "last_modified",
@@ -111,7 +111,7 @@ function DatasetsTable({
         type: Date,
         minWidth: 140,
         editable: false,
-        valueGetter: (value) => formatDate(value),
+        valueFormatter: (params) => formatDate(params.value),
       },
       {
         field: "actions",

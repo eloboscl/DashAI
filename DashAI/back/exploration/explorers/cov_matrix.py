@@ -13,8 +13,7 @@ from DashAI.back.dataloaders.classes.dashai_dataset import (  # ClassLabel, Valu
     DashAIDataset,
 )
 from DashAI.back.dependencies.database.models import Explorer, Notebook
-from DashAI.back.exploration.base_explorer import BaseExplorerSchema
-from DashAI.back.exploration.statistical_explorer import StatisticalExplorer
+from DashAI.back.exploration.base_explorer import BaseExplorer, BaseExplorerSchema
 
 
 class CovarianceMatrixExplorerSchema(BaseExplorerSchema):
@@ -49,7 +48,7 @@ class CovarianceMatrixExplorerSchema(BaseExplorerSchema):
     )  # type: ignore
 
 
-class CovarianceMatrixExplorer(StatisticalExplorer):
+class CovarianceMatrixExplorer(BaseExplorer):
     """
     CovarianceExplorer is an explorer that returns the covariance matrix of the dataset.
 
@@ -64,7 +63,6 @@ class CovarianceMatrixExplorer(StatisticalExplorer):
         "Its result is a heatmap by default, "
         "but can also be returned as a tabular result."
     )
-    IMAGE_PREVIEW = "covariance_matrix.png"
 
     SCHEMA = CovarianceMatrixExplorerSchema
     metadata: Dict[str, Any] = {

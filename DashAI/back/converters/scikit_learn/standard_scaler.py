@@ -1,8 +1,5 @@
 from sklearn.preprocessing import StandardScaler as StandardScalerOperation
 
-from DashAI.back.converters.category.scaling_and_normalization import (
-    ScalingAndNormalizationConverter,
-)
 from DashAI.back.converters.sklearn_wrapper import SklearnWrapper
 from DashAI.back.core.schema_fields import bool_field, schema_field
 from DashAI.back.core.schema_fields.base_schema import BaseSchema
@@ -30,9 +27,7 @@ class StandardScalerSchema(BaseSchema):
     )  # type: ignore
 
 
-class StandardScaler(
-    ScalingAndNormalizationConverter, SklearnWrapper, StandardScalerOperation
-):
+class StandardScaler(SklearnWrapper, StandardScalerOperation):
     """Scikit-learn's Standard Scaler wrapper for DashAI."""
 
     SCHEMA = StandardScalerSchema
@@ -40,4 +35,3 @@ class StandardScaler(
         "Standardize features by removing the mean and scaling to unit variance."
     )
     DISPLAY_NAME = "Standard Scaler"
-    IMAGE_PREVIEW = "standard_scaler.png"

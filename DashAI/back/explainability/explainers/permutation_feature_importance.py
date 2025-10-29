@@ -11,7 +11,6 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, make_scorer
 from DashAI.back.core.schema_fields import (
     BaseSchema,
     enum_field,
-    float_field,
     int_field,
     schema_field,
 )
@@ -36,7 +35,7 @@ class PermutationFeatureImportanceSchema(BaseSchema):
 
     n_repeats: schema_field(
         int_field(ge=1),
-        placeholder=20,
+        placeholder=10,
         description="Number of times to permute a feature.",
     )  # type: ignore
 
@@ -47,10 +46,10 @@ class PermutationFeatureImportanceSchema(BaseSchema):
         "permutations of each feature.",
     )  # type: ignore
 
-    max_samples_fraction: schema_field(
-        float_field(ge=0.0, le=1.0),
-        placeholder=1.0,
-        description="The fraction of samples to draw from the test set to "
+    max_samples: schema_field(
+        int_field(ge=1),
+        placeholder=100,
+        description="The number of samples to draw from the dataset to "
         "calculate feature importance at each repetition.",
     )  # type: ignore
 
@@ -70,7 +69,7 @@ class PermutationFeatureImportance(BaseGlobalExplainer):
         scoring: Union[str, List[str], None] = None,
         n_repeats: int = 5,
         random_state: Union[int, None] = None,
-        max_samples_fraction: float = 0.5,
+        max_samples: int = 1,
     ):
         """Initialize a new instance of PermutationFeatureImportance explainer.
 
@@ -86,8 +85,8 @@ class PermutationFeatureImportance(BaseGlobalExplainer):
         random_state: Union[int, None]
             Seed for  the random number generator to control the
             permutations of each feature
-        max_samples_fraction: float
-            The fraction of samples to draw from the test set to calculate
+        max_samples: int
+            The number of samples to draw from the dataset to calculate
             feature importance at each repetition
         """
 
@@ -101,7 +100,7 @@ class PermutationFeatureImportance(BaseGlobalExplainer):
         self.scoring = metrics[scoring]
         self.n_repeats = n_repeats
         self.random_state = random_state
-        self.max_samples_fraction = max_samples_fraction
+        self.max_samples = max_samples
 
     def explain(self, dataset: Tuple[DatasetDict, DatasetDict]):
         """Method for calculating the importance of features in the model
@@ -135,8 +134,6 @@ class PermutationFeatureImportance(BaseGlobalExplainer):
         def patched_metric(y_true, y_pred_probas):
             return self.scoring(y_true, np.argmax(y_pred_probas, axis=1))
 
-        max_samples = max(int(len(x_test) * self.max_samples_fraction), 1)
-
         # TODO: binary and multi-label scorer
         pfi = permutation_importance(
             estimator=self.model,
@@ -145,7 +142,7 @@ class PermutationFeatureImportance(BaseGlobalExplainer):
             scoring=make_scorer(patched_metric),
             n_repeats=self.n_repeats,
             random_state=self.random_state,
-            max_samples=max_samples,
+            max_samples=self.max_samples,
         )
 
         return {

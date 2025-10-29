@@ -1,6 +1,5 @@
 from sklearn.preprocessing import PolynomialFeatures as PolynomialFeaturesOperation
 
-from DashAI.back.converters.category.polynomial_kernel import PolynomialKernelConverter
 from DashAI.back.converters.sklearn_wrapper import SklearnWrapper
 from DashAI.back.core.schema_fields import (
     bool_field,
@@ -45,17 +44,9 @@ class PolynomialFeaturesSchema(BaseSchema):
     )  # type: ignore
 
 
-class PolynomialFeatures(
-    PolynomialKernelConverter, SklearnWrapper, PolynomialFeaturesOperation
-):
+class PolynomialFeatures(SklearnWrapper, PolynomialFeaturesOperation):
     """Scikit-learn's PolynomialFeatures wrapper for DashAI."""
 
     SCHEMA = PolynomialFeaturesSchema
-    DESCRIPTION = (
-        "Generate polynomial and interaction features. "
-        "For example, if an input sample is two dimensional "
-        "and of the form [a, b], "
-        "the degree-2 polynomial features are [1, a, b, a^2, ab, b^2]"
-    )
+    DESCRIPTION = "Generate polynomial and interaction features."
     DISPLAY_NAME = "Polynomial Features"
-    IMAGE_PREVIEW = "polynomial_features.png"

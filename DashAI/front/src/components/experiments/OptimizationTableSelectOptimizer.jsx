@@ -23,31 +23,23 @@ function OptimizationTableSelectOptimizer({
   });
 
   return (
-    <TextField
-      select
-      value={selectedOptimizer || ""}
-      onChange={(e) => {
-        setSelectedOptimizer(e.target.value);
-      }}
-      fullWidth
-      size="small"
-      variant="standard"
-      slotProps={{
-        MenuProps: {
-          PaperProps: {
-            style: {
-              maxHeight: 300,
-            },
-          },
-        },
-      }}
-    >
-      {compatibleModels.map((optimizer) => (
-        <MenuItem key={optimizer.name} value={optimizer.name}>
-          {optimizer.name}
-        </MenuItem>
-      ))}
-    </TextField>
+    <>
+      <TextField
+        select
+        label="Select an optimizer to add"
+        value={selectedOptimizer || ""}
+        onChange={(e) => {
+          setSelectedOptimizer(e.target.value);
+        }}
+        fullWidth
+      >
+        {compatibleModels.map((optimizer) => (
+          <MenuItem key={optimizer.name} value={optimizer.name}>
+            {optimizer.name}
+          </MenuItem>
+        ))}
+      </TextField>
+    </>
   );
 }
 

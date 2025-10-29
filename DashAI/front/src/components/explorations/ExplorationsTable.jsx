@@ -133,13 +133,13 @@ function ExplorationsTable({
         field: "created",
         headerName: "Created",
         width: 200,
-        valueGetter: (value) => formatDate(value),
+        valueFormatter: (params) => formatDate(params.value),
       },
       {
         field: "last_modified",
         headerName: "Edited",
         width: 200,
-        valueGetter: (value) => formatDate(value),
+        valueFormatter: (params) => formatDate(params.value),
       },
       {
         field: "actions",

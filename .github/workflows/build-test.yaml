@@ -1,7 +1,6 @@
 name: Build and Test
 on:
-  push:
-  pull_request:
+  push
 
 jobs:
   react-build-test:
@@ -31,17 +30,15 @@ jobs:
 
   pytest:
     needs: react-build-test
-    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        python-version: ${{ github.event_name == 'pull_request' && fromJson('["3.10", "3.11", "3.12", "3.13"]') || fromJson('["3.10"]') }}
+        python-version: ['3.10']
         os: [ubuntu-latest, windows-latest, macos-latest]
-
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -50,17 +47,14 @@ jobs:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements-dev.txt') }}
 
-      - name: Upgrade pip tools
-        run: pip install --upgrade pip setuptools wheel
       - run: pip install --upgrade --upgrade-strategy eager -r requirements.txt
       - run: pip install --upgrade --upgrade-strategy eager -r requirements-dev.txt
-
-      - name: Prepare frontend build
-        run: mkdir -p DashAI/front/build
-
+      - name: Make build directory
+        run: mkdir DashAI/front/build
       - uses: actions/download-artifact@v4
         with:
           name: react-build
           path: DashAI/front/build
       - name: Test with pytest
-        run: pytest -v
+        run: |
+          pytest

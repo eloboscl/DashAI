@@ -1,6 +1,5 @@
 from sklearn.feature_selection import SelectFwe as SelectFweOperation
 
-from DashAI.back.converters.category.feature_selection import FeatureSelectionConverter
 from DashAI.back.converters.sklearn_wrapper import SklearnWrapper
 from DashAI.back.core.schema_fields import float_field, schema_field
 from DashAI.back.core.schema_fields.base_schema import BaseSchema
@@ -14,15 +13,11 @@ class SelectFweSchema(BaseSchema):
     )  # type: ignore
 
 
-class SelectFwe(FeatureSelectionConverter, SklearnWrapper, SelectFweOperation):
+class SelectFwe(SklearnWrapper, SelectFweOperation):
     """Scikit-learn's SelectFwe wrapper for DashAI."""
 
     SCHEMA = SelectFweSchema
     DESCRIPTION = "Filter: Select features according to a family-wise error rate test."
     SUPERVISED = True
     DISPLAY_NAME = "Select FWE"
-    IMAGE_PREVIEW = "select_fwe.png"
     metadata = {}
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)

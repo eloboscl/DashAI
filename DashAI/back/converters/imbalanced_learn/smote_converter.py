@@ -1,6 +1,5 @@
 from imblearn.over_sampling import SMOTE
 
-from DashAI.back.converters.category.sampling import SamplingConverter
 from DashAI.back.converters.imbalanced_learn_wrapper import ImbalancedLearnWrapper
 from DashAI.back.core.schema_fields import (
     enum_field,
@@ -31,11 +30,10 @@ class SMOTESchema(BaseSchema):
     )  # type: ignore
 
 
-class SMOTEConverter(SamplingConverter, ImbalancedLearnWrapper, SMOTE):
+class SMOTEConverter(ImbalancedLearnWrapper, SMOTE):
     SCHEMA = SMOTESchema
     DESCRIPTION = "SMOTE: Synthetic Minority Over-sampling Technique."
     DISPLAY_NAME = "SMOTE (Oversampling)"
-    IMAGE_PREVIEW = "smote.png"
 
     def __init__(self, **kwargs):
         super(SMOTEConverter, self).__init__(**kwargs)

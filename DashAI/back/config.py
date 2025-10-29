@@ -10,7 +10,6 @@ class DefaultSettings(BaseSettings):
     """Default settings for DashAI."""
 
     FRONT_BUILD_PATH: str = os.path.join(dashai_path, "front/build")
-    BACK_PATH: str = os.path.join(dashai_path, "back")
     API_V0_STR: str = "/api/v0"
     API_V1_STR: str = "/api/v1"
 

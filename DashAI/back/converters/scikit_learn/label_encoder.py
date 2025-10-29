@@ -2,7 +2,6 @@ from typing import Union
 
 from sklearn.preprocessing import LabelEncoder as LabelEncoderOperation
 
-from DashAI.back.converters.category.encoding import EncodingConverter
 from DashAI.back.converters.sklearn_wrapper import SklearnWrapper
 from DashAI.back.core.schema_fields.base_schema import BaseSchema
 from DashAI.back.dataloaders.classes.dashai_dataset import (
@@ -15,14 +14,13 @@ class LabelEncoderSchema(BaseSchema):
     pass
 
 
-class LabelEncoder(EncodingConverter, SklearnWrapper):
+class LabelEncoder(SklearnWrapper):
     """Scikit-learn's LabelEncoder wrapper for DashAI that supports multiple columns."""
 
     SCHEMA = LabelEncoderSchema
     DESCRIPTION = "Encode target labels with value between 0 and n_classes-1."
     SHORT_DESCRIPTION = "Convert categorical labels to numeric values"
     DISPLAY_NAME = "Label Encoder"
-    IMAGE_PREVIEW = "label_encoder.png"
 
     def __init__(self, **kwargs):
         super().__init__()

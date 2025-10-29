@@ -12,7 +12,6 @@ import {
   Grid,
   Typography,
   IconButton,
-  Box,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
@@ -199,7 +198,7 @@ function PredictionModal({
       fullScreen={screenSm}
       fullWidth
       maxWidth={"lg"}
-      onClose={() => {}} // No cerrar automáticamente
+      onClose={handleCloseDialog}
       aria-labelledby="new-predict-dialog-title"
       aria-describedby="new-predict-dialog-description"
       scroll="paper"
@@ -210,77 +209,56 @@ function PredictionModal({
       }}
     >
       <DialogTitle>
-        <Box sx={{ position: "relative" }}>
-          <Grid container direction={"row"} alignItems={"center"}>
-            <Grid size={{ xs: 12, md: 3 }}>
-              <Grid
-                container
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Grid size={{ xs: 1 }}>
-                  <IconButton
-                    edge="start"
-                    color="inherit"
-                    onClick={handleCloseDialog}
-                    sx={{ display: { xs: "flex", sm: "none" } }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Grid>
-                <Grid size={{ xs: 11 }}>
-                  <Typography
-                    variant="h6"
-                    component="h3"
-                    align={matches ? "center" : "left"}
-                    sx={{ mb: { sm: 2, md: 0 } }}
-                  >
-                    Create a New Prediction
-                  </Typography>
-                </Grid>
+        <Grid container direction={"row"} alignItems={"center"}>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Grid size={{ xs: 1 }}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  onClick={handleCloseDialog}
+                  sx={{ display: { xs: "flex", sm: "none" } }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Grid>
+              <Grid size={{ xs: 11 }}>
+                <Typography
+                  variant="h6"
+                  component="h3"
+                  align={matches ? "center" : "left"}
+                  sx={{ mb: { sm: 2, md: 0 } }}
+                >
+                  Create a New Prediction
+                </Typography>
               </Grid>
             </Grid>
-            <Grid size={{ xs: 12, md: 8 }}>
-              <Stepper
-                nonLinear
-                activeStep={activeStep}
-                sx={{ maxWidth: "100%" }}
-              >
-                {steps.map((step, index) => (
-                  <Step
-                    key={`${step.name}`}
-                    completed={activeStep > index}
-                    disabled={activeStep < index}
-                  >
-                    <StepButton
-                      color="inherit"
-                      onClick={handleStepButton(index)}
-                    >
-                      {step.label}
-                    </StepButton>
-                  </Step>
-                ))}
-              </Stepper>
-            </Grid>
-            <Grid
-              size={{ xs: 12, md: 1 }}
-              sx={{
-                display: { xs: "none", sm: "flex" },
-                justifyContent: "flex-end",
-              }}
-            >
-              <IconButton
-                onClick={handleCloseDialog}
-                sx={{
-                  color: (theme) => theme.palette.grey[500],
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Grid>
           </Grid>
-        </Box>
+          <Grid size={{ xs: 12, md: 9 }}>
+            <Stepper
+              nonLinear
+              activeStep={activeStep}
+              sx={{ maxWidth: "100%" }}
+            >
+              {steps.map((step, index) => (
+                <Step
+                  key={`${step.name}`}
+                  completed={activeStep > index}
+                  disabled={activeStep < index}
+                >
+                  <StepButton color="inherit" onClick={handleStepButton(index)}>
+                    {step.label}
+                  </StepButton>
+                </Step>
+              ))}
+            </Stepper>
+          </Grid>
+        </Grid>
       </DialogTitle>
       <DialogContent dividers>
         {renderStep(

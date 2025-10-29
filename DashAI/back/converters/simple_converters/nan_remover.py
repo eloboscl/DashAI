@@ -1,7 +1,4 @@
 from DashAI.back.converters.base_converter import BaseConverter
-from DashAI.back.converters.category.basic_preprocessing import (
-    BasicPreprocessingConverter,
-)
 from DashAI.back.core.schema_fields.base_schema import BaseSchema
 from DashAI.back.dataloaders.classes.dashai_dataset import (
     DashAIDataset,
@@ -13,7 +10,7 @@ class NanRemoverSchema(BaseSchema):
     pass
 
 
-class NanRemover(BasicPreprocessingConverter, BaseConverter):
+class NanRemover(BaseConverter):
     """
     A converter that removes rows with NaN values from the dataset.
     Only the columns selected in the scope are used to determine which
@@ -28,7 +25,6 @@ class NanRemover(BasicPreprocessingConverter, BaseConverter):
     )
     SHORT_DESCRIPTION = "Removes the rows with NaN values from the dataset."
     DISPLAY_NAME = "NaN Remover"
-    IMAGE_PREVIEW = "nan_remover.png"
 
     def __init__(self):
         super().__init__()

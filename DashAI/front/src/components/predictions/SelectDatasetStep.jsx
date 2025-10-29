@@ -31,7 +31,7 @@ const columns = [
     headerName: "Created",
     minWidth: 200,
     type: Date,
-    valueGetter: (value) => formatDate(value),
+    valueFormatter: (params) => formatDate(params.value),
     editable: false,
   },
   {
@@ -39,7 +39,7 @@ const columns = [
     headerName: "Last modified",
     minWidth: 200,
     type: Date,
-    valueGetter: (value) => formatDate(value),
+    valueFormatter: (params) => formatDate(params.value),
     editable: false,
   },
 ];

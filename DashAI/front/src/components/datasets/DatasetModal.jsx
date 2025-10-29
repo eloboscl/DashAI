@@ -12,10 +12,7 @@ import {
   Grid,
   Typography,
   StepButton,
-  IconButton,
-  Box,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import SelectDataloaderStep from "./SelectDataloaderStep";
 import ConfigureAndUploadDataset from "./ConfigureAndUploadDataset";
 import { useSnackbar } from "notistack";
@@ -116,8 +113,7 @@ function DatasetModal({ open, setOpen, updateDatasets }) {
   return (
     <Dialog
       open={open}
-      onClose={() => {}}
-      disableEscapeKeyDown
+      onClose={handleCloseDialog}
       fullWidth
       maxWidth={"lg"}
       scroll="paper"
@@ -129,7 +125,7 @@ function DatasetModal({ open, setOpen, updateDatasets }) {
     >
       {/* Title */}
       <DialogTitle id="new-experiment-dialog-title">
-        <Grid container direction={"row"} alignItems={"center"} spacing={1}>
+        <Grid container direction={"row"} alignItems={"center"}>
           <Grid size={{ xs: 12, md: 3 }}>
             <Typography
               variant="h6"
@@ -139,7 +135,7 @@ function DatasetModal({ open, setOpen, updateDatasets }) {
               New dataset
             </Typography>
           </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
+          <Grid size={{ xs: 12, md: 9 }}>
             <Stepper
               nonLinear
               activeStep={activeStep}
@@ -157,22 +153,6 @@ function DatasetModal({ open, setOpen, updateDatasets }) {
                 </Step>
               ))}
             </Stepper>
-          </Grid>
-          <Grid
-            size={{ xs: 12, md: 1 }}
-            display="flex"
-            justifyContent="flex-end"
-          >
-            <IconButton
-              onClick={handleCloseDialog}
-              sx={{
-                position: { xs: "absolute", md: "static" },
-                right: { xs: 8, md: "auto" },
-                top: { xs: 8, md: "auto" },
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
           </Grid>
         </Grid>
       </DialogTitle>

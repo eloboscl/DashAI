@@ -90,16 +90,7 @@ class OptunaOptimizer(BaseOptimizer):
             def objective(trial):
                 classifier_trial = self.model.classifier
                 for hyperparameter, values in self.parameters.items():
-                    if any(isinstance(i, float) for i in values):
-                        value = trial.suggest_float(
-                            hyperparameter, values[0], values[-1]
-                        )
-                    elif any(isinstance(i, int) for i in values):
-                        value = trial.suggest_int(hyperparameter, values[0], values[-1])
-                    else:
-                        raise ValueError(
-                            f"Unsupported parameter type for {hyperparameter}"
-                        )
+                    value = trial.suggest_int(hyperparameter, values[0], values[-1])
                     setattr(classifier_trial, hyperparameter, value)
 
                 model_trial = self.model
@@ -117,16 +108,7 @@ class OptunaOptimizer(BaseOptimizer):
             def objective(trial):
                 model_trial = self.model
                 for hyperparameter, values in self.parameters.items():
-                    if any(isinstance(i, float) for i in values):
-                        value = trial.suggest_float(
-                            hyperparameter, values[0], values[-1]
-                        )
-                    elif any(isinstance(i, int) for i in values):
-                        value = trial.suggest_int(hyperparameter, values[0], values[-1])
-                    else:
-                        raise ValueError(
-                            f"Unsupported parameter type for {hyperparameter}"
-                        )
+                    value = trial.suggest_int(hyperparameter, values[0], values[-1])
                     setattr(model_trial, hyperparameter, value)
 
                 model_trial.fit(

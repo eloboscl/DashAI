@@ -19,8 +19,7 @@ from DashAI.back.dataloaders.classes.dashai_dataset import (  # ClassLabel, Valu
     DashAIDataset,
 )
 from DashAI.back.dependencies.database.models import Explorer, Notebook
-from DashAI.back.exploration.base_explorer import BaseExplorerSchema
-from DashAI.back.exploration.statistical_explorer import StatisticalExplorer
+from DashAI.back.exploration.base_explorer import BaseExplorer, BaseExplorerSchema
 
 
 class Method(enum.Enum):
@@ -61,7 +60,7 @@ class CorrelationMatrixExplorerSchema(BaseExplorerSchema):
     )  # type: ignore
 
 
-class CorrelationMatrixExplorer(StatisticalExplorer):
+class CorrelationMatrixExplorer(BaseExplorer):
     """
     CorrelationMatrixExplorer is an explorer that returns a correlation matrix
     of a dataset.
@@ -77,7 +76,6 @@ class CorrelationMatrixExplorer(StatisticalExplorer):
         "Its result is a heatmap by default, "
         "but can also be returned as a tabular result."
     )
-    IMAGE_PREVIEW = "correlation_matrix.png"
 
     SCHEMA = CorrelationMatrixExplorerSchema
     metadata: Dict[str, Any] = {

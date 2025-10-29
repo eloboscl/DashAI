@@ -7,7 +7,10 @@ from DashAI.back.dataloaders.classes.dashai_dataset import (
     split_dataset,
     split_indexes,
 )
-from DashAI.back.explainability import PartialDependence, PermutationFeatureImportance
+from DashAI.back.explainability import (
+    PartialDependence,
+    PermutationFeatureImportance,
+)
 from DashAI.back.models.base_model import BaseModel
 from DashAI.back.models.scikit_learn.decision_tree_classifier import (
     DecisionTreeClassifier,
@@ -114,7 +117,7 @@ def test_permutation_feature_importance(trained_model: BaseModel, dataset: Datas
         "scoring": "accuracy",
         "n_repeats": 5,
         "random_state": None,
-        "max_samples_fraction": 1.0,
+        "max_samples": 1,
     }
     explainer = PermutationFeatureImportance(trained_model, **parameters)
     explanation = explainer.explain(dataset)
@@ -133,7 +136,7 @@ def test_permutation_feature_importance(trained_model: BaseModel, dataset: Datas
         "scoring": "balanced_accuracy",
         "n_repeats": 5,
         "random_state": None,
-        "max_samples_fraction": 1.0,
+        "max_samples": 1,
     }
     explainer = PermutationFeatureImportance(trained_model, **parameters)
     explanation = explainer.explain(dataset)

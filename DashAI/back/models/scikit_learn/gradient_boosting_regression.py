@@ -4,7 +4,6 @@ from DashAI.back.core.schema_fields import (
     BaseSchema,
     bool_field,
     enum_field,
-    float_field,
     none_type,
     optimizer_float_field,
     optimizer_int_field,
@@ -25,7 +24,7 @@ class GradientBoostingRSchema(BaseSchema):
     )  # type: ignore
 
     learning_rate: schema_field(
-        optimizer_float_field(ge=0.01),
+        optimizer_float_field(gt=0.0),
         placeholder={
             "optimize": False,
             "fixed_value": 0.1,
@@ -47,7 +46,7 @@ class GradientBoostingRSchema(BaseSchema):
     )  # type: ignore
 
     subsample: schema_field(
-        optimizer_float_field(ge=0.1, le=1.0),
+        optimizer_float_field(gt=0.0, le=1.0),
         placeholder={
             "optimize": False,
             "fixed_value": 1.0,
@@ -87,8 +86,13 @@ class GradientBoostingRSchema(BaseSchema):
     )  # type: ignore
 
     min_weight_fraction_leaf: schema_field(
-        float_field(ge=0.0, le=0.5),
-        placeholder=0.0,
+        optimizer_float_field(ge=0.0, le=0.5),
+        placeholder={
+            "optimize": False,
+            "fixed_value": 0.0,
+            "lower_bound": 0.0,
+            "upper_bound": 0.5,
+        },
         description="The minimum weighted fraction of the sum total of weights"
         " (of all the input samples) required to be at a leaf node.",
     )  # type: ignore
@@ -100,8 +104,13 @@ class GradientBoostingRSchema(BaseSchema):
     )  # type: ignore
 
     min_impurity_decrease: schema_field(
-        float_field(ge=0.0),
-        placeholder=0.0,
+        optimizer_float_field(ge=0.0),
+        placeholder={
+            "optimize": False,
+            "fixed_value": 0.0,
+            "lower_bound": 0.0,
+            "upper_bound": 0.5,
+        },
         description="A node will be split if this split induces a decrease of "
         "the impurity greater than or equal to this value.",
     )  # type: ignore

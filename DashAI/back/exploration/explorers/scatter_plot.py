@@ -17,8 +17,7 @@ from DashAI.back.dataloaders.classes.dashai_dataset import (  # ClassLabel, Valu
     DashAIDataset,
 )
 from DashAI.back.dependencies.database.models import Explorer, Notebook
-from DashAI.back.exploration.base_explorer import BaseExplorerSchema
-from DashAI.back.exploration.relationship_explorer import RelationshipExplorer
+from DashAI.back.exploration.base_explorer import BaseExplorer, BaseExplorerSchema
 
 
 class ScatterPlotSchema(BaseExplorerSchema):
@@ -39,7 +38,7 @@ class ScatterPlotSchema(BaseExplorerSchema):
     )  # type: ignore
 
 
-class ScatterPlotExplorer(RelationshipExplorer):
+class ScatterPlotExplorer(BaseExplorer):
     """
     ScatterPlotExplorer is an explorer that returns a scatter plot
     of selected columns of a dataset.
@@ -50,7 +49,6 @@ class ScatterPlotExplorer(RelationshipExplorer):
         "ScatterPlotExplorer is an explorer that returns a scatter plot "
         "of selected columns of a dataset."
     )
-    IMAGE_PREVIEW = "scatter_plot.png"
 
     SCHEMA = ScatterPlotSchema
     metadata: Dict[str, Any] = {

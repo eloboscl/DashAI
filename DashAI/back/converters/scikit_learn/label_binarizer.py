@@ -1,6 +1,5 @@
 from sklearn.preprocessing import LabelBinarizer as LabelBinarizerOperation
 
-from DashAI.back.converters.category.encoding import EncodingConverter
 from DashAI.back.converters.sklearn_wrapper import SklearnWrapper
 from DashAI.back.core.schema_fields import int_field, schema_field
 from DashAI.back.core.schema_fields.base_schema import BaseSchema
@@ -20,10 +19,9 @@ class LabelBinarizerSchema(BaseSchema):
     # sparse_output: Sparse output is not supported in pandas
 
 
-class LabelBinarizer(EncodingConverter, SklearnWrapper, LabelBinarizerOperation):
+class LabelBinarizer(SklearnWrapper, LabelBinarizerOperation):
     """Scikit-learn's LabelBinarizer wrapper for DashAI."""
 
     SCHEMA = LabelBinarizerSchema
     DESCRIPTION = "Binarize labels in a one-vs-all fashion."
     DISPLAY_NAME = "Label Binarizer"
-    IMAGE_PREVIEW = "label_binarizer.png"

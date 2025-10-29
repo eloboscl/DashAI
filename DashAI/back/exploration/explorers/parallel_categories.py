@@ -17,8 +17,7 @@ from DashAI.back.dataloaders.classes.dashai_dataset import (  # ClassLabel, Valu
     DashAIDataset,
 )
 from DashAI.back.dependencies.database.models import Explorer, Notebook
-from DashAI.back.exploration.base_explorer import BaseExplorerSchema
-from DashAI.back.exploration.multidimensional_explorer import MultidimensionalExplorer
+from DashAI.back.exploration.base_explorer import BaseExplorer, BaseExplorerSchema
 
 
 class ParallelCategoriesSchema(BaseExplorerSchema):
@@ -29,7 +28,7 @@ class ParallelCategoriesSchema(BaseExplorerSchema):
     )  # type: ignore
 
 
-class ParallelCategoriesExplorer(MultidimensionalExplorer):
+class ParallelCategoriesExplorer(BaseExplorer):
     """
     Parallel Categories Explorer is a class that generates a parallel categories plot
     for a given dataset.
@@ -42,7 +41,6 @@ class ParallelCategoriesExplorer(MultidimensionalExplorer):
         "Each vertical line represents one data point, and the lines are connected "
         "by a series of horizontal lines. "
     )
-    IMAGE_PREVIEW = "parallel_categories.png"
 
     SCHEMA = ParallelCategoriesSchema
     metadata: Dict[str, Any] = {
