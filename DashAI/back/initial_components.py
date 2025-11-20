@@ -81,6 +81,7 @@ from DashAI.back.models import (
     DummyClassifier,
     GradientBoostingR,
     HistGradientBoostingClassifier,
+    KMeans,
     KNeighborsClassifier,
     LinearRegression,
     LinearSVR,
@@ -161,6 +162,7 @@ def get_initial_components():
         RidgeRegression,
         LinearSVR,
         LinearRegression,
+        KMeans,
         # Dataloaders
         CSVDataLoader,
         JSONDataLoader,

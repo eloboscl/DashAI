@@ -18,7 +18,7 @@ class SklearnLikeClusteringModel(ClusteringModel):
         model = joblib.load(filename)
         return model
 
-    def fit(self, x: DashAIDataset) -> "SklearnLikeClusteringModel":
+    def fit(self, x: DashAIDataset, *args, **kwargs) -> "SklearnLikeClusteringModel":
         """Fits sklearn clustering model.
 
         Parameters
@@ -32,7 +32,7 @@ class SklearnLikeClusteringModel(ClusteringModel):
             The fitted model.
         """
         x_pandas = x.to_pandas()
-        return super().fit(x_pandas)
+        return super().fit(x_pandas, *args, **kwargs)
 
     def predict(self, x: DashAIDataset) -> np.ndarray:
         """Assigns a cluster to each sample in x.
@@ -57,7 +57,7 @@ class SklearnLikeClusteringModel(ClusteringModel):
                 "Not implement predict and labels_ is missing."
             ) from None
 
-    def fit_predict(self, x: DashAIDataset) -> np.ndarray:
+    def fit_predict(self, x: DashAIDataset, *args, **kwargs) -> np.ndarray:
         """Fits the clustering model and return cluster assignments.
 
         Parameters
@@ -72,10 +72,10 @@ class SklearnLikeClusteringModel(ClusteringModel):
         """
         x_pandas = x.to_pandas()
 
-        if hasattr(super(), "fit_predict"):
-            labels = super().fit_predict(x_pandas)
-        else:
-            super().fit(x_pandas)
+        try:
+            labels = super().fit_predict(x_pandas, *args, **kwargs)
+        except Exception:
+            super().fit(x_pandas, *args, **kwargs)
             labels = self.predict(x)
 
         self.metadata = {"labels": labels}
