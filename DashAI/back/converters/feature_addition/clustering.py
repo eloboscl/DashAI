@@ -11,7 +11,7 @@ from DashAI.back.models.unsupervised.scikit_learn.kmeans import KMeans
 
 
 class ClusteringSchema(BaseSchema):
-    algorithm: schema_field(
+    selected_algorithm: schema_field(
         enum_field(["KMeans"]),
         "KMeans",
         "Clustering algorithm to use",
@@ -32,14 +32,37 @@ class Clustering(FeatureAdditionConverter, BaseConverter):
         "KMeans": KMeans,
     }
 
-    def __init__(self, algorithm: str, **kwargs):
+    def __init__(self, algorithm_name: str = "KMeans", **kwargs):
         super().__init__()
 
-        self.algorithm_name = algorithm
-        AlgorithmClass = self.ALGORITHMS[self.algorithm_name]
-        self.model = AlgorithmClass(**kwargs)
+        self.algorithm_name = algorithm_name
+        if self.algorithm_name not in self.ALGORITHMS:
+            raise ValueError(f"Unknown algorithm '{self.algorithm_name}'")
 
+        AlgorithmClass = self.ALGORITHMS[self.algorithm_name]
+
+        self.model = AlgorithmClass(**kwargs)
         self.labels_ = None
+
+    @classmethod
+    def get_schema(cls):
+        base_schema = super().get_schema()
+
+        properties = base_schema.get("properties", {})
+        algorithm_field = properties.get("selected_algorithm", {})
+        default_algorithm = algorithm_field.get("placeholder")
+
+        AlgorithmClass = cls.ALGORITHMS[default_algorithm]
+
+        if hasattr(AlgorithmClass, "SCHEMA"):
+            schema_algorithm = AlgorithmClass.SCHEMA.model_json_schema()
+
+        for field_name, field_def in schema_algorithm.items():
+            if field_name == "selected_algorithm":
+                continue
+            base_schema[field_name] = field_def
+
+        return base_schema
 
     def fit(
         self, x: DashAIDataset, y: Union[DashAIDataset, None] = None

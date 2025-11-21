@@ -6,6 +6,7 @@ from DashAI.back.converters import (
     BagOfWordsConverter,
     Binarizer,
     CharacterReplacer,
+    Clustering,
     ColumnRemover,
     Embedding,
     FastICA,
@@ -259,6 +260,7 @@ def get_initial_components():
         SMOTEConverter,
         SMOTEENNConverter,
         RandomUnderSamplerConverter,
+        Clustering,
     ]
 
     # Obtener plugins instalados
