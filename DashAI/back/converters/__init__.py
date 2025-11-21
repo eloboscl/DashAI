@@ -17,6 +17,7 @@ from DashAI.back.converters.category.sampling import SamplingConverter
 from DashAI.back.converters.category.scaling_and_normalization import (
     ScalingAndNormalizationConverter,
 )
+from DashAI.back.converters.category.feature_addition import FeatureAdditionConverter
 
 # Hugging Face module
 from DashAI.back.converters.hugging_face.embedding import Embedding
@@ -80,3 +81,6 @@ from DashAI.back.converters.simple_converters.character_replacer import (
 )
 from DashAI.back.converters.simple_converters.column_remover import ColumnRemover
 from DashAI.back.converters.simple_converters.nan_remover import NanRemover
+
+# Clustering
+from DashAI.back.converters.feature_addition.clustering import Clustering
