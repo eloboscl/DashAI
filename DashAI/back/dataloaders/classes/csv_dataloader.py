@@ -257,8 +257,51 @@ class CSVDataLoader(BaseDataLoader):
             )
         clean_params["delimiter"] = separator
 
-        if params.get("header") is not None:
-            clean_params["header"] = params["header"]
+        header = params.get("header")
+        header_provided = "header" in params
+        if header_provided:
+            if isinstance(header, str):
+                normalized_header = header.strip()
+                if normalized_header == "" or normalized_header.lower() == "infer":
+                    header = None
+                elif normalized_header.lower() in {"none", "null"}:
+                    header = None
+                else:
+                    list_candidate = normalized_header
+                    if list_candidate.startswith("[") and list_candidate.endswith("]"):
+                        list_candidate = list_candidate[1:-1]
+                    if "," in list_candidate:
+                        items = [item.strip() for item in list_candidate.split(",")]
+                        if not any(item for item in items) or not all(
+                            item.isdigit() for item in items if item
+                        ):
+                            raise ValueError(
+                                "El parámetro 'header' debe ser un entero, "
+                                "lista de enteros o 'infer'."
+                            )
+                        header = [int(item) for item in items if item]
+                    elif list_candidate.isdigit():
+                        header = int(list_candidate)
+            elif isinstance(header, list):
+                if all(isinstance(value, str) and value.isdigit() for value in header):
+                    header = [int(value) for value in header]
+
+            if header is None:
+                if header_provided:
+                    if params.get("header") is None:
+                        clean_params["header"] = None
+                    elif isinstance(params.get("header"), str):
+                        if str(params.get("header")).strip().lower() in {"none", "null"}:
+                            clean_params["header"] = None
+            elif isinstance(header, int) or (
+                isinstance(header, list) and all(isinstance(value, int) for value in header)
+            ):
+                clean_params["header"] = header
+            else:
+                raise ValueError(
+                    "El parámetro 'header' debe ser un entero, "
+                    "lista de enteros o 'infer'."
+                )
 
         list_params = ["names", "na_values", "true_values", "false_values"]
         for param in list_params:
